@@ -69,7 +69,10 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
   <p>This is another paragraph.</p>
 
   <p> 태그는 문단 전환이기에 p 태그는 줄바꿈이 되지만, p 태그 안에서는 space나 단순 enter로 인한 줄바꿈은 html이 읽지 않습니다.
-  아래 두개를 txt파일에 집어넣고 확장자를 html로 만들고 열어보면 이해 할 수 있어용.
+  아래 두개를 txt파일에 집어넣고 확장자를 html로 만들고 열어보면 이해 할 수 있습니다.
+  HTML 표준에서는 소문자 태그를 요구하지 않지만, XHTML과 같은 더 엄격한 문서 유형에서는 소문자를 요구합니다.
+  그렇기에 기본적으로 태그 쓸 땐 소문자 태그를 권장합니다. 아 참고로 w3school에서 공부할거면 대소문자 구분 안하면 틀린걸로 취급하니 유의하시기 바랍니다.
+
 
   <p>
   This paragraph
@@ -123,53 +126,20 @@ HTML 링크
   속성 style은 색상, 글꼴, 크기 등의 스타일을 요소에 추가하는 데 사용됩니다.
   <p style="color:red;">This is a red paragraph.</p>
   이건 단락 내부의 텍스트 색을 red로 설정한 것입니다. color 외에도 여러가지가 있습니다.
-  font-size: 글자의 크기를 설정합니다.
-  font-weight: 글자의 두께를 설정합니다.
-  font-family: 글꼴 종류를 설정합니다.
+  그건 조금 뒤에 봅시다.
+
+웹 페이지의 언어 선언
+
+  웹 페이지의 언어를 선언하려면 태그 lang내부에 속성을 항상 포함해야 합니다 . 이는 검색 엔진과 브라우저를 지원하기 위한 것입니다.
+  <!DOCTYPE html> 밑에 <html lang="en"> 이건 영어선언이고, <html lang="en-US"> 미국, 영어 선언입니다. 한국같은 경우는 <html lang="ko"> 혹은 <html lang="ko-kr">를   쓰고, 언어와 국가를 변경하고 싶다면 각각 en 자리에 해당하는 언어 코드를 넣고, - 뒤의 us 자리에 해당하는 국가 코드를 넣으면 됩니다.
+  해당하는 코드는 ISO 639-1(언어 코드 정의), ISO 3166-1 alpha-2(국가 코드 정의) 를 찾아보시면 됩니다.
+
+제목 속성 (title - 실제론 추가정보 속성)
+
+  앞서 설명했지만, 아래 코드와 같이 원하는 속성 옆에 title= 을 넣으면 요소에 대한 추가 정보를 정의합니다.
+  해당 텍스트에 마우스 커서를 올리면 그 내용이 title로써 뜬다는 말이죠.
   
-<p style="font-size: 18px; font-weight: bold; font-family: Arial, sans-serif;">
-  이 단락은 Arial 글꼴을 사용하며, 크기는 18px이고, 두께는 굵게 설정되었습니다.
-
-배경 관련 속성
-  
-  background-color: 배경 색상을 설정합니다.
-  background-image: 배경 이미지를 설정합니다.
-  background-size: 배경 이미지의 크기를 설정합니다.
-  
-  <div style="background-color: #f0f0f0; padding: 20px;">
-    이 div는 연한 회색 배경과 20px의 패딩을 가지고 있습니다.
-  </div>
-
-  margin: 요소의 외부 여백을 설정합니다.
-  padding: 요소의 내부 여백을 설정합니다.
-
-  <div style="margin: 10px; padding: 15px; border: 1px solid #ccc;">
-    이 div는 10px의 외부 여백과 15px의 내부 여백을 가지고 있으며, 회색 테두리가 있습니다.
-  </div>
-  
-테두리 관련 속성
-
-  border: 요소의 테두리를 설정합니다.
-  border-radius: 테두리의 모서리를 둥글게 설정합니다.
-  <button style="border: 2px solid #4CAF50; border-radius: 5px; padding: 10px 20px;">둥근 테두리 버튼</button>
-  
-레이아웃 관련 속성
-
-  display: 요소의 표시 방식을 설정합니다 (ex: block, inline, flex).
-  width 및 height: 요소의 너비와 높이를 설정합니다.
-  float: 요소를 왼쪽 또는 오른쪽으로 띄웁니다.
-
-  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <p style="width: 200px; height: 100px; background-color: #ffeb3b; text-align: center; line-height: 100px;">
-      중앙 정렬된 박스
-    </p>
-  </div>
-
-텍스트 정렬 및 장식
-  
-  text-align: 텍스트의 정렬을 설정합니다 (예: left, right, center).
-  text-decoration: 텍스트의 장식을 설정합니다 (예: underline, none).
-
-  <h1 style="text-align: center; text-decoration: underline;">중앙 정렬되고 밑줄이 있는 제목</h1>
-
-  
+  해보면 압니다.
+  <h2 title="I'm a header">The title Attribute</h2>
+  <p title="I'm a header">This is just one of the paragraph.</p>
+  <a href="https://www.w3schools.com" title="aw3schools로 가는 하이퍼링크">w3schools로 가는 하이퍼링크</a>
