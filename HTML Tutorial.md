@@ -17,35 +17,33 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
   이러한 요소를 빈 요소라고 합니다. 빈 요소에는 종료 태그(</요소>)가 없습니다.
 
 
-기본적인 HTML 구조
-  <html>
-  <head>
-  <title>페이지 제목</title>
-  </head>
-  <body>
-  <h1>이것은 제목입니다.</h1>  
-  <p>이것은 문단입니다.</p>
-  <p>이것은 또 다른 문단입니다.</p>
-  </body>
-  </html>
+### 기본적인 HTML 구조
+  
+    <html>
+    <head>
+    <title>페이지 제목</title>
+    </head>
+    <body>
+    <h1>이것은 제목입니다.</h1>  
+    <p>이것은 문단입니다.</p>
+    <p>이것은 또 다른 문단입니다.</p>
+    </body>
+    </html>
 
-  <body> 섹션 내부의 콘텐츠는 브라우저에 표시됩니다.
-  <title> 요소 내부의 콘텐츠는 브라우저의 타이틀 바 또는 페이지 탭에 표시됩니다.
+  body 섹션 내부의 콘텐츠는 브라우저에 표시됩니다.
+  title 요소 내부의 콘텐츠는 브라우저의 타이틀 바 또는 페이지 탭에 표시됩니다.
 
   처음 배울 땐 전문적인 지식이 없으니 메모장이나 써줍시다.
   Mac 사용자라면 TextEdit 쓰시구요.
   그냥 해당하는 텍스트에디터 열고 아래 코드를 복붙한다음,
 
-<!DOCTYPE html> /*HTML5에 대한 선언*/
-<html>
-<body>
-
-<h1>My First Heading</h1>
-
-<p>My first paragraph.</p>
-
-</body>
-</html>
+    <!DOCTYPE html> /*HTML5에 대한 선언*/
+    <html>
+    <body>
+    <h1>My First Heading</h1>
+    <p>My first paragraph.</p>
+    </body>
+    </html>
 
   파일 > 다른 이름으로 저장을 선택하세요.
   파일 이름을 "index.html" 으로 지정 하고, 인코딩을 UTF-8 (HTML 파일에 가장 적합한 인코딩)로 선택합니다.
@@ -55,17 +53,16 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
 
   이게 제목입니다. (여기서 제목이라고 한게 웹페이지 위에 뜨는 제목이 아니라 내부에 뜨는 제목, 부제 등입니다.)
 
-  <h1>가장 큰 제목</h1>
-  <h2>두 번째로 큰 제목</h2>
-  <h3>세 번째로 큰 제목</h3>
+  <h1>h1은 가장 큰 제목</h1>
+  <h2>h2는 두 번째로 큰 제목</h2>
+  <h3>h3은 세 번째로 큰 제목</h3>
 
   h1 부터 h6까지 점점 작아집니다.
 
-
   HTML 문단입니다.
 
-  <p>This is a paragraph.</p>
-  <p>This is another paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is another paragraph.</p>
 
   <p> 태그는 문단 전환이기에 p 태그는 줄바꿈이 되지만, p 태그 안에서는 space나 단순 enter로 인한 줄바꿈은 html이 읽지 않습니다.
   아래 두개를 txt파일에 집어넣고 확장자를 html로 만들고 열어보면 이해 할 수 있습니다.
@@ -73,25 +70,25 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
   그렇기에 기본적으로 태그 쓸 땐 소문자 태그를 권장합니다. 아 참고로 w3school에서 공부할거면 대소문자 구분 안하면 틀린걸로 취급하니 유의하시기 바랍니다.
 
 
-  <p>
-  This paragraph
-  contains a lot of lines
-  in the source code,
-  but the browser
-  ignores it.
-  </p>
+    <p>
+    This paragraph
+    contains a lot of lines
+    in the source code,
+    but the browser
+    ignores it.
+    </p>
 
-  <p>
-  This paragraph
-  contains         a lot of spaces
-  in the source         code,
-  but the        browser
-  ignores it.
-  </p>
+    <p>
+    This paragraph
+    contains         a lot of spaces
+    in the source         code,
+    but the        browser
+    ignores it.
+    </p>
   
   CTRL + U를 누르면 HTML 코드를 볼 수 있습니다
 
-HTML 링크
+### HTML 링크
 
   <a href="https://www.w3schools.com">w3schools로 가는 하이퍼링크</a>
   하이퍼링크로써 안에 있는 텍스트를 누르면 하이퍼링크로 연결이 됩니다
@@ -106,39 +103,41 @@ HTML 링크
   
 ### HTML 이미지
 
-  <img src="w3schools.jpg" alt="W3Schools.com" width="104" height="142">
+    <img src="w3schools.jpg" alt="W3Schools.com" width="104" height="142">
   여기서 img src에서 경로를 불러올 수도 있고, 아니면 로컬 내부의 파일을 불러올 수도 있습니다.
   width와 height으로 이미지 개체의 크기를 조절할 수 있고, %나 수치로 설정 가능합니다.
 
-  <a href="https://www.w3schools.com"><img src="w3schoos.jpg"></a>
+    <a href="https://www.w3schools.com"><img src="w3schoos.jpg"></a>
   a href 안에 img src를 넣어서 이미지를 하이퍼링크화해서 이미지를 누르면 이동하도록 설정할 수도 있습니다.
 
   
-  <img src="img_girl.jpg" alt="Girl with a jacket">  
+    <img src="img_girl.jpg" alt="Girl with a jacket">  
   
   alt태그 <img> 어떤 이유로 이미지를 표시할 수 없는 경우에, 이미지의 대체 텍스트를 지정합니다.
   이는 느린 연결, 속성 오류 src또는 사용자가 화면 판독기를 사용하는 경우 때문일 수 있습니다.
   당연히 없는 이미지 쓰면 텍스트만 나오고 이미지는 나오지 않습니다.
 
-스타일 속성
+### 스타일 속성
   
   속성 style은 색상, 글꼴, 크기 등의 스타일을 요소에 추가하는 데 사용됩니다.
-  <p style="color:red;">This is a red paragraph.</p>
+  
+    <p style="color:red;">This is a red paragraph.</p>
   이건 단락 내부의 텍스트 색을 red로 설정한 것입니다. color 외에도 여러가지가 있습니다.
   그건 조금 뒤에 봅시다.
 
-웹 페이지의 언어 선언
+### 웹 페이지의 언어 선언
 
   웹 페이지의 언어를 선언하려면 태그 lang내부에 속성을 항상 포함해야 합니다 . 이는 검색 엔진과 브라우저를 지원하기 위한 것입니다.
   <!DOCTYPE html> 밑에 <html lang="en"> 이건 영어선언이고, <html lang="en-US"> 미국, 영어 선언입니다. 한국같은 경우는 <html lang="ko"> 혹은 <html lang="ko-kr">를   쓰고, 언어와 국가를 변경하고 싶다면 각각 en 자리에 해당하는 언어 코드를 넣고, - 뒤의 us 자리에 해당하는 국가 코드를 넣으면 됩니다.
   해당하는 코드는 ISO 639-1(언어 코드 정의), ISO 3166-1 alpha-2(국가 코드 정의) 를 찾아보시면 됩니다.
 
-제목 속성 (title - 실제론 추가정보 속성)
+### 제목 속성 (title - 실제론 추가정보 속성)
 
   앞서 설명했지만, 아래 코드와 같이 원하는 속성 옆에 title= 을 넣으면 요소에 대한 추가 정보를 정의합니다.
   해당 텍스트에 마우스 커서를 올리면 그 내용이 title로써 뜬다는 말이죠.
   
-  해보면 압니다.
-  <h2 title="I'm a header">The title Attribute</h2>
-  <p title="I'm a header">This is just one of the paragraph.</p>
-  <a href="https://www.w3schools.com" title="aw3schools로 가는 하이퍼링크">w3schools로 가는 하이퍼링크</a>
+  해보면 압니다. 복붙하시거나 따라 적어보세요. 원하시는 HTML에 스타일을 붙여서 바꾸시면 더욱 좋습니다.
+  
+    <h2 title="I'm a header">The title Attribute</h2>
+    <p title="I'm a header">This is just one of the paragraph.</p>
+    <a href="https://www.w3schools.com" title="aw3schools로 가는 하이퍼링크">w3schools로 가는 하이퍼링크</a>
