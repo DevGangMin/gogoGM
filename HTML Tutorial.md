@@ -51,6 +51,12 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
 
   아까 코드를 보면  <!DOCTYPE html> /*HTML5에 대한 선언*/ 라고 있는데 제가 주석을 달아놓은 그대로, 이 문서 파일은 HTML5를 쓰는 문서라는 뜻입니다.
 
+### 웹 페이지의 언어 선언
+
+  웹 페이지의 언어를 선언하려면 태그 lang내부에 속성을 항상 포함해야 합니다 . 이는 검색 엔진과 브라우저를 지원하기 위한 것입니다.
+  <!DOCTYPE html> 밑에 <html lang="en"> 이건 영어선언이고, <html lang="en-US"> 미국, 영어 선언입니다. 한국같은 경우는 <html lang="ko"> 혹은 <html lang="ko-kr">를   쓰고, 언어와 국가를 변경하고 싶다면 각각 en 자리에 해당하는 언어 코드를 넣고, - 뒤의 us 자리에 해당하는 국가 코드를 넣으면 됩니다.
+  해당하는 코드는 ISO 639-1(언어 코드 정의), ISO 3166-1 alpha-2(국가 코드 정의) 를 찾아보시면 됩니다.
+
   이게 제목입니다. (여기서 제목이라고 한게 웹페이지 위에 뜨는 제목이 아니라 내부에 뜨는 제목, 부제 등입니다.)
 
   <h1>h1은 가장 큰 제목</h1>
@@ -120,17 +126,13 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
 ### 스타일 속성
   
   속성 style은 색상, 글꼴, 크기 등의 스타일을 요소에 추가하는 데 사용됩니다.
-  
+      
+    <tagname style="property:value;"> <- 이 양식을 따르면 됩니다.
+    예를 들면,
     <p style="color:red;">This is a red paragraph.</p>
+    
   이건 단락 내부의 텍스트 색을 red로 설정한 것입니다. color 외에도 여러가지가 있습니다.
-  그건 조금 뒤에 봅시다.
-
-### 웹 페이지의 언어 선언
-
-  웹 페이지의 언어를 선언하려면 태그 lang내부에 속성을 항상 포함해야 합니다 . 이는 검색 엔진과 브라우저를 지원하기 위한 것입니다.
-  <!DOCTYPE html> 밑에 <html lang="en"> 이건 영어선언이고, <html lang="en-US"> 미국, 영어 선언입니다. 한국같은 경우는 <html lang="ko"> 혹은 <html lang="ko-kr">를   쓰고, 언어와 국가를 변경하고 싶다면 각각 en 자리에 해당하는 언어 코드를 넣고, - 뒤의 us 자리에 해당하는 국가 코드를 넣으면 됩니다.
-  해당하는 코드는 ISO 639-1(언어 코드 정의), ISO 3166-1 alpha-2(국가 코드 정의) 를 찾아보시면 됩니다.
-
+  
 ### 제목 속성 (title - 실제론 추가정보 속성)
 
   앞서 설명했지만, 아래 코드와 같이 원하는 속성 옆에 title= 을 넣으면 요소에 대한 추가 정보를 정의합니다.
@@ -141,3 +143,47 @@ HTML은 Hyper Text Markup Language의 약자로, Tim Berners-Lee가 개발한 �
     <h2 title="I'm a header">The title Attribute</h2>
     <p title="I'm a header">This is just one of the paragraph.</p>
     <a href="https://www.w3schools.com" title="aw3schools로 가는 하이퍼링크">w3schools로 가는 하이퍼링크</a>
+
+### 내부 CSS(internal CSS)
+  내부 CSS는 단일 HTML 페이지의 스타일을 정의하는 데 사용됩니다.
+
+  내부 CSS는 HTML 페이지의 섹션에 정의되어 있습니다. 요소 내에서.<head><style>
+
+  다음 예제에서는 모든 요소의 텍스트 색상을 설정합니다 (해당 페이지에서) 파란색으로, 모든 요소의 텍스트 색상을 빨강. 또한 페이지는 "powderblue" 배경으로 표시됩니다. 색: <h1><p>
+   
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    body {background-color: powderblue;}  
+    h1 {color: blue;}
+    p {color: red;}
+    </style>
+    </head>
+    <body>
+
+    <h1>This is a heading</h1>
+    <p>This is a paragraph.</p>
+
+    </body>
+    </html>
+
+### 외부 CSS(external CSS)
+  외부 스타일시트는 많은 HTML 페이지의 스타일을 정의하는 데 사용됩니다.
+  외부 스타일 시트를 사용하려면 각 HTML 페이지의 섹션에 링크를 추가합니다.
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+
+      <h1>This is a heading</h1>
+      <p>This is a paragraph.</p>
+
+    </body>
+    </html>
+  외부 스타일시트는 모든 텍스트 편집기에서 작성할 수 있습니다.
+  파일에는 어떤 것도 포함되어서는 안 됩니다. HTML 코드이며 .css 확장자로 저장해야 합니다.
+
