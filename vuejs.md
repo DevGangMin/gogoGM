@@ -112,10 +112,9 @@ server rendering(서버로부터 HTML 파일을 받아 브라우저에 뿌려주
 
 여러 개의 작은 application instance를 생성하고 그들이 책임지는 요소에 mount하는게 좋음.
 
-아래는 요청하신 내용을 Markdown 문서 형식으로 작성한 것입니다.
 
-```markdown
-# Vue 템플릿 구문
+
+## Vue 템플릿 구문
 
 Vue는 HTML 기반의 템플릿 구문을 사용하여 렌더링된 DOM을 기본 컴포넌트 인스턴스의 데이터에 선언적으로 바인딩할 수 있게 합니다. 모든 Vue 템플릿은 구문적으로 유효한 HTML로, 규격을 준수하는 브라우저와 HTML 파서가 파싱할 수 있습니다.
 
@@ -287,9 +286,7 @@ Vue 템플릿 내에서 JavaScript 표현식은 다음 위치에서 사용할 �
 
 일부 디렉티브는 "인수"를 가질 수 있으며, 이는 디렉티브 이름 뒤에 콜론으로 표시됩니다. 예를 들어, `v-bind` 디렉티브는 HTML 속성을 반응적으로 업데이트하는 데 사용됩니다:
 
-```
-
-html
+```html
 <a v-bind:href="url"> ... </a>
 ```
 
@@ -298,7 +295,7 @@ html
 ```html
 <button v-on:click="doSomething">Click me</button>
 
-<!-- 축약 -->
+<!-- 축약형 v-on: -> @ -->
 <button @click="doSomething">Click me</button>
 ```
 
@@ -318,5 +315,3 @@ html
 
 이처럼 Vue는 템플릿 구문을 사용하여 반응적인 사용자 인터페이스를 쉽게 구성할 수 있는 방법을 제공합니다. 추가적인 사용 사례나 질문이 있다면 언제든지 말씀해 주세요!
 ```
-
-이 문서를 Markdown 형식으로 저장하고 싶으시면 말씀해 주세요!
