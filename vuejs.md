@@ -525,3 +525,275 @@ const alwaysSmall = computed({
   - 원본 상태가 변경될 때마다 새로운 스냅샷이 생성됨.
   - 스냅샷을 변경하는 것은 의미가 없으므로, 계산된 반환 값은 읽기 전용으로 취급하고 절대 변경하지 않아야 함.
   - 변경하는 대신, 새로운 계산을 유도하기 위해 의존하는 원본 상태를 업데이트해야함.
+
+# Class and Style Bindings
+
+데이터 바인딩의 일반적인 필요는 요소의 클래스 목록과 인라인 스타일을 조작하는 것임.
+
+클래스와 스타일은 모두 속성이므로 `v-bind`를 사용하여 문자열 값을 동적으로 할당할 수 있음.
+
+그러나 문자열 연결을 사용하여 이러한 값을 생성하려고 하면 번거롭고 오류가 발생하기 쉬워짐.
+
+이 때문에 Vue는 `v-bind`가 클래스 및 스타일과 함께 사용될 때 특별한 확장을 제공함.
+
+문자열 외에도 표현식은 객체 또는 배열로 평가될 수 있음.
+
+## Binding HTML Classes
+
+### Binding to Objects
+`:class`(짧게 `v-bind:class`)에 객체를 전달하여 클래스를 동적으로 토글할 수 있음:
+
+```vue
+<template>
+  <div :class="{ active: isActive }"></div>
+</template>
+```
+
+위 구문은 `isActive` 데이터 속성의 진리값에 따라 `active` 클래스의 존재 여부가 결정됨을 의미함.
+
+여러 클래스를 토글하려면 객체에 더 많은 필드를 추가하면 됨.
+
+또한 `:class` 지시자는 일반 `class` 속성과 함께 공존할 수 있음.
+
+아래과 같은 상태가 주어졌을 때:
+
+```js
+const isActive = ref(true);
+const hasError = ref(false);
+```
+
+아래과 같은 템플릿이 있을 때:
+
+```vue
+<template>
+  <div class="static" :class="{ active: isActive, 'text-danger': hasError }"></div>
+</template>
+```
+
+렌더링 결과는 아래과 같음:
+
+```html
+<div class="static active"></div>
+```
+
+`isActive` 또는 `hasError`가 변경되면 클래스 목록이 accordingly 업데이트됨.
+
+예를 들어, `hasError`가 `true`가 되면 클래스 목록은 `"static active text-danger"`가 됨.
+
+바인딩된 객체는 인라인으로 작성할 필요가 없음:
+
+```js
+const classObject = reactive({
+  active: true,
+  'text-danger': false
+});
+```
+
+```vue
+<template>
+  <div :class="classObject"></div>
+</template>
+```
+
+이것은 아래과 같이 렌더링됨:
+
+```html
+<div class="active"></div>
+```
+
+계산된 속성을 바인딩하여 객체를 반환할 수도 있음. 이는 일반적이고 강력한 패턴임:
+
+```js
+const isActive = ref(true);
+const error = ref(null);
+
+const classObject = computed(() => ({
+  active: isActive.value && !error.value,
+  'text-danger': error.value && error.value.type === 'fatal'
+}));
+```
+
+```vue
+<template>
+  <div :class="classObject"></div>
+</template>
+```
+
+### Binding to Arrays
+`:class`에 배열을 바인딩하여 클래스 목록을 적용할 수 있음:
+
+```js
+const activeClass = ref('active');
+const errorClass = ref('text-danger');
+```
+
+```vue
+<template>
+  <div :class="[activeClass, errorClass]"></div>
+</template>
+```
+
+이는 아래과 같이 렌더링됨:
+
+```html
+<div class="active text-danger"></div>
+```
+
+조건부로 클래스 목록에 클래스를 토글하고 싶다면 삼항 표현식을 사용할 수 있음:
+
+```vue
+<template>
+  <div :class="[isActive ? activeClass : '', errorClass]"></div>
+</template>
+```
+
+이렇게 하면 항상 `errorClass`가 적용되지만, `activeClass`는 `isActive`가 참일 때만 적용됨.
+
+그러나 조건부 클래스가 여러 개일 경우 다소 장황할 수 있음.
+
+그래서 배열 구문 안에서 객체 구문을 사용할 수 있음:
+
+```vue
+<template>
+  <div :class="[{ [activeClass]: isActive }, errorClass]"></div>
+</template>
+```
+
+## With Components
+이 섹션은 컴포넌트에 대한 지식을 가정함. 필요하다면 건너뛰었다가 나중에 다시 돌아오세요.
+
+컴포넌트의 `class` 속성을 사용할 때, 루트 요소에 해당 클래스가 추가되며, 기존의 클래스와 병합됨.
+
+예를 들어, `MyComponent`라는 컴포넌트가 아래과 같은 템플릿을 가지고 있다면:
+
+```vue
+<template>
+  <p class="foo bar">Hi!</p>
+</template>
+```
+
+컴포넌트를 사용할 때 클래스를 추가하면:
+
+```vue
+<template>
+  <MyComponent class="baz boo" />
+</template>
+```
+
+렌더링되는 HTML은 아래과 같음:
+
+```html
+<p class="foo bar baz boo">Hi!</p>
+```
+
+클래스 바인딩의 경우도 동일함:
+
+```vue
+<template>
+  <MyComponent :class="{ active: isActive }" />
+</template>
+```
+
+`isActive`가 참일 때, 렌더링되는 HTML은 아래과 같음:
+
+```html
+<p class="foo bar active">Hi!</p>
+```
+
+만약 컴포넌트에 여러 루트 요소가 있다면, 어떤 요소가 이 클래스를 받을지 정의해야 함.
+
+이는 `$attrs` 컴포넌트 속성을 사용하여 수행할 수 있음:
+
+```vue
+<template>
+  <p :class="$attrs.class">Hi!</p>
+  <span>This is a child component</span>
+</template>
+```
+
+```vue
+<template>
+  <MyComponent class="baz" />
+</template>
+```
+
+렌더링 결과는:
+
+```html
+<p class="baz">Hi!</p>
+<span>This is a child component</span>
+```
+
+## Binding Inline Styles
+
+### Binding to Objects
+
+`:style`은 JavaScript 객체 값에 바인딩을 지원하며, 이는 HTML 요소의 `style` 속성에 해당함:
+
+```js
+const activeColor = ref('red');
+const fontSize = ref(30);
+```
+
+```vue
+<template>
+  <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+</template>
+```
+
+camelCase 키를 사용하는 것이 권장되지만, `:style`은 CSS에서 사용되는 방식을 따르는 kebab-case CSS 속성 키도 지원함. 
+
+예를 들어:
+
+```vue
+<template>
+  <div :style="{ 'font-size': fontSize + 'px' }"></div>
+</template>
+```
+
+스타일 객체에 직접 바인딩하는 것이 템플릿을 더 깔끔하게 유지하는 경우가 많음:
+
+```js
+const styleObject = reactive({
+  color: 'red',
+  fontSize: '30px'
+});
+```
+
+```vue
+<template>
+  <div :style="styleObject"></div>
+</template>
+```
+
+다시 한 번, 객체 스타일 바인딩은 계산된 속성과 함께 객체를 반환할 때 자주 사용됨.
+
+### Binding to Arrays
+
+`:style`에 여러 스타일 객체의 배열을 바인딩할 수 있음. 이러한 객체들은 병합되어 동일한 요소에 적용됨:
+
+```vue
+<template>
+  <div :style="[baseStyles, overridingStyles]"></div>
+</template>
+```
+
+### Auto-prefixing
+
+`:style`에서 벤더 프리픽스가 필요한 CSS 속성을 사용할 경우, Vue는 자동으로 적절한 프리픽스를 추가함.
+
+Vue는 런타임에서 현재 브라우저에서 지원되는 스타일 속성을 확인하여 이를 수행함.
+
+특정 속성이 지원되지 않는 경우, 다양한 프리픽스 변형이 테스트되어 지원되는 것을 찾음.
+
+### Multiple Values
+
+스타일 속성에 여러 (프리픽스가 있는) 값을 제공할 수 있으며, 브라우저가 지원하는 마지막 값만 렌더링됨. 예를 들어:
+
+```vue
+<template>
+  <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+</template>
+```
+
+이는 브라우저가 `flex`의 프리픽스 없는 버전을 지원하는 경우 `display: flex`로 렌더링됨.
