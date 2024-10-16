@@ -24,15 +24,16 @@ const app = createApp(App)
 대부분의 실제 애플리케이션은 중첩 가능하고 재사용 가능한 component의 트리 구조로 조직됨.
 
 예를 들어, Todo 애플리케이션의 component 트리는 다음과 같을 수 있음:
-
-    App (root component)
-    ├─ TodoList
-    │  └─ TodoItem
-    │     ├─ TodoDeleteButton
-    │     └─ TodoEditButton
-    └─ TodoFooter
-       ├─ TodoClearButton
-       └─ TodoStatistics    ## 앱 마운팅
+```cmd
+App (root component)
+├─ TodoList
+│  └─ TodoItem
+│     ├─ TodoDeleteButton
+│     └─ TodoEditButton
+└─ TodoFooter
+   ├─ TodoClearButton
+   └─ TodoStatistics    ## 앱 마운팅
+```
 
 application instance는 .mount() method가 호출될 때까지 아무것도 rendering하지 않음.
 
