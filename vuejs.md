@@ -132,9 +132,9 @@ Vue는 템플릿을 매우 최적화된 JavaScript 코드로 컴파일함. 반�
 
 머스터시 태그는 해당 component instance의 `msg` 속성 값으로 대체됨. 또한 `msg` 속성이 변경될 때마다 자동으로 업데이트됨.
 
-## 원시 HTML
+## Raw HTML(원시 HTML)
 
-이중 중괄호는 데이터를 일반 텍스트로 해석하며, HTML로 출력하려면 `v-html` 디렉티브를 사용해야 함:
+이중 중괄호는 데이터를 일반 텍스트로 해석하며, HTML로 출력하려면 `v-html` directive를 사용해야 함:
 
 ```html
 <p>Using text interpolation: {{ rawHtml }}</p>
@@ -144,22 +144,22 @@ Vue는 템플릿을 매우 최적화된 JavaScript 코드로 컴파일함. 반�
 위의 예제에서 `v-html`은 특수 속성으로, Vue에서 제공하는 특별한 속성으로 접두사 `v-`가 붙음. 이 속성은 렌더링된 DOM에 특별한 반응성을 적용함. 여기서 우리는 "현재 활성 instance의 `rawHtml` 속성과 함께 이 요소의 내부 HTML을 최신 상태로 유지하라"고 말하고 있는 것임.
 
 `span`의 내용은 `rawHtml` 속성의 값으로 대체되며, 이는 일반 HTML로 해석되며 데이터 바인딩은 무시됨. `v-html`을 사용하여 템플릿 부분을 구성할 수 없다는 점에 유의하세요. Vue는 문자열 기반 템플릿 엔진이 아니며, 대신 UI 재사용 및 구성을 위한 기본 단위로 component를 선호함.
-
-## 보안 경고
+```
+! 보안 경고
 
 웹사이트에서 임의의 HTML을 동적으로 렌더링하는 것은 XSS 취약점을 초래할 수 있어 매우 위험할 수 있음. `v-html`은 신뢰할 수 있는 콘텐츠에만 사용하고, 사용자 제공 콘텐츠에는 사용하지 마세요.
+```
+## Attribute Bindings(속성 바인딩)
 
-## 속성 바인딩
-
-머스터시는 HTML 속성 내에서 사용할 수 없음. 대신 `v-bind` 디렉티브를 사용해야 함:
+머스터시는 HTML 속성 내에서 사용할 수 없음. 대신 `v-bind` directive를 사용해야 함:
 
 ```html
 <div v-bind:id="dynamicId"></div>
 ```
 
-`v-bind` 디렉티브는 Vue에게 요소의 `id` 속성을 `dynamicId` 속성과 동기화하라고 지시함. 바인딩된 값이 `null` 또는 `undefined`일 경우, 해당 속성은 렌더링된 요소에서 제거됨.
+`v-bind` directive는 Vue에게 요소의 `id` 속성을 `dynamicId` 속성과 동기화하라고 지시함. 바인딩된 값이 `null` 또는 `undefined`일 경우, 해당 속성은 렌더링된 요소에서 제거됨.
 
-## 축약 구문
+## Shorthand(축약 구문)
 
 `v-bind`는 매우 자주 사용되기 때문에 전용 축약 구문이 있음:
 
@@ -189,7 +189,7 @@ Vue는 템플릿을 매우 최적화된 JavaScript 코드로 컴파일함. 반�
 
 이는 JavaScript에서 객체를 선언할 때 속성 축약 구문과 유사함. 이 기능은 Vue 3.4 이상에서만 사용할 수 있음.
 
-## 불리언 속성
+## Boolean (불리언)
 
 불리언 속성은 요소에 존재함으로써 true/false 값을 나타낼 수 있는 속성임. 예를 들어 `disabled`는 가장 일반적으로 사용되는 불리언 속성 중 하나임.
 
@@ -201,7 +201,7 @@ Vue는 템플릿을 매우 최적화된 JavaScript 코드로 컴파일함. 반�
 
 `isButtonDisabled`가 truthy한 값을 가질 경우 `disabled` 속성이 포함됨. 값이 빈 문자열인 경우에도 속성이 포함됨. 다른 falsy 값의 경우 속성은 생략됨.
 
-## 여러 속성 동적 바인딩
+## Dynamically Binding Multiple Attributes(여러 속성 동적 바인딩)
 
 다음과 같이 여러 속성을 나타내는 JavaScript 객체가 있을 경우:
 
@@ -238,9 +238,9 @@ Vue는 모든 데이터 바인딩 내에서 JavaScript 표현식의 전체 기�
 Vue 템플릿 내에서 JavaScript 표현식은 다음 위치에서 사용할 수 있음:
 
 - 텍스트 보간(머스터시) 내
-- 모든 Vue 디렉티브의 속성 값 내
+- 모든 Vue directive의 속성 값 내
 
-## 표현식만 사용하기
+## Expressions(표현식)만 사용하기
 
 각 바인딩에는 하나의 표현식만 포함될 수 있음. 표현식은 값으로 평가될 수 있는 코드 조각임. 간단한 확인 방법은 `return` 뒤에 사용할 수 있는지 여부임.
 
@@ -254,7 +254,7 @@ Vue 템플릿 내에서 JavaScript 표현식은 다음 위치에서 사용할 �
 {{ if (ok) { return message } }}
 ```
 
-## 함수 호출하기
+## 함수 호출
 
 바인딩 표현식 내에서 component에서 노출된 메소드를 호출하는 것도 가능함:
 
@@ -266,36 +266,36 @@ Vue 템플릿 내에서 JavaScript 표현식은 다음 위치에서 사용할 �
 
 > **팁:** 바인딩 표현식 내에서 호출된 함수는 component가 업데이트될 때마다 호출되므로 데이터 변경이나 비동기 작업을 트리거하는 부작용이 있어서는 안 됨.
 
-## 제한된 글로벌 접근
+## Restricted 글로벌 접근
 
-템플릿 표현식은 샌드박스화되어 있으며 제한된 글로벌 목록에만 접근할 수 있음. 이 목록은 Math와 Date와 같은 일반적으로 사용되는 내장 글로벌을 노출함.
+템플릿 표현식은 sandboxed 되어 있으며 제한된 글로벌 목록에만 접근할 수 있음. 이 목록은 Math와 Date와 같은 일반적으로 사용되는 내장 글로벌을 노출함.
 
 리스트에 명시적으로 포함되지 않은 글로벌(예: `window`의 사용자 연결 속성)은 템플릿 표현식에서 접근할 수 없음. 그러나 `app.config.globalProperties`에 추가하여 모든 Vue 표현식에 대한 추가 글로벌을 명시적으로 정의할 수 있음.
 
-## 디렉티브
+## directive
 
-디렉티브는 `v-` 접두사가 붙은 특별한 속성임.
+directive는 `v-` 접두사가 붙은 특별한 속성임.
 
-Vue는 위에서 소개한 `v-html` 및 `v-bind`를 포함하여 여러 내장 디렉티브를 제공함.
+Vue는 위에서 소개한 `v-html` 및 `v-bind`를 포함하여 여러 내장 directive를 제공함.
 
-디렉티브 속성 값은 단일 JavaScript 표현식이어야 하며(예외: `v-for`, `v-on` 및 `v-slot`은 나중에 각각의 섹션에서 다룰 것임). 
-디렉티브의 역할은 표현식의 값이 변경될 때 DOM에 반응적으로 업데이트를 적용하는 것임. 예를 들어 `v-if`를 살펴보겠음:
+directive 속성 값은 단일 JavaScript 표현식이어야 하며(예외: `v-for`, `v-on` 및 `v-slot`은 나중에 각각의 섹션에서 다룰 것임). 
+directive의 역할은 표현식의 값이 변경될 때 DOM에 반응적으로 업데이트를 적용하는 것임. 예를 들어 `v-if`를 살펴보겠음:
 
 ```html
 <p v-if="seen">Now you see me</p>
 ```
 
-여기서 `v-if` 디렉티브는 `seen` 표현식의 진리값에 따라 `<p>` 요소를 제거하거나 삽입함.
+여기서 `v-if` directive는 `seen` 표현식의 진리값에 따라 `<p>` 요소를 제거하거나 삽입함.
 
-## 인수
+## Arguments (인수)
 
-일부 디렉티브는 "인수"를 가질 수 있으며, 이는 디렉티브 이름 뒤에 콜론으로 표시됨. 예를 들어, `v-bind` 디렉티브는 HTML 속성을 반응적으로 업데이트하는 데 사용됨:
+일부 directive는 Arguments, 인수를 가질 수 있으며, 이는 directive 이름 뒤에 콜론으로 표시됨. 예를 들어, `v-bind` directive는 HTML 속성을 반응적으로 업데이트하는 데 사용됨:
 
 ```html
 <a v-bind:href="url"> ... </a>
 ```
 
-`v-on` 디렉티브도 인수를 가질 수 있음:
+`v-on` directive도 인수를 가질 수 있음:
 
 ```html
 <button v-on:click="doSomething">Click me</button>
@@ -306,9 +306,9 @@ Vue는 위에서 소개한 `v-html` 및 `v-bind`를 포함하여 여러 내장 �
 
 `v-bind`는 속성을 바인딩하기 위해 사용되며, `v-on`은 이벤트 리스너를 추가하는 데 사용됨.
 
-## 수식
+## Modifiers(수식)
 
-일부 디렉티브는 특별한 수식을 가질 수 있음. `v-for`는 여러 항목을 반복할 때 사용되며, 인수와 함께 사용됨:
+일부 directive는 특별한 수식을 가질 수 있음. `v-for`는 여러 항목을 반복할 때 사용되며, 인수와 함께 사용됨:
 
 ```html
 <ul>
@@ -318,4 +318,6 @@ Vue는 위에서 소개한 `v-html` 및 `v-bind`를 포함하여 여러 내장 �
 
 위 코드에서 `item`은 각 항목을 나타내며, `items`는 반복하는 데이터 배열임.
 
-템플릿 구문을 사용하여 반응적인 사용자 인터페이스를 쉽게 구성할 수 있는 방법을 제공하는 게 vue임.
+
+![image](https://github.com/user-attachments/assets/24672905-a1e0-44a0-b76b-5244f4ccb4f0)
+
