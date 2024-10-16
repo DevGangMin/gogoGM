@@ -361,3 +361,160 @@ const { id } = object
 {{ object.id }}
 ```
 이는 텍스트 보간의 편리한 기능이며, {{ object.id.value }}와 동등함.
+
+# Computed Properties
+
+## 기본 예시
+템플릿 내 표현식은 매우 편리하지만, 간단한 작업에 적합함. 템플릿에 너무 많은 논리를 포함하면 복잡해지고 유지보수가 어려워질 수 있음. 예를 들어, 중첩 배열을 가진 객체가 있을 때:
+
+```javascript
+const author = reactive({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
+```
+
+작가가 이미 책을 가지고 있는지에 따라 다른 메시지를 표시하려고 할 때:
+
+```html
+<p>Has published books:</p>
+<span>{{ author.books.length > 0 ? 'Yes' : 'No' }}</span>
+```
+
+이 시점에서 템플릿이 조금 복잡해지고 있음. `author.books`에 따라 계산을 수행하는 것을 깨닫기 위해 약간의 시간을 할애해야 함.
+
+더 중요한 것은 이 계산을 템플릿에 여러 번 포함해야 한다면, 중복되는 것을 원치 않을 것임.
+
+그래서 복잡한 로직이 포함된 reactive 데이터를 사용할 때는 계산된 속성을 사용하는 것이 좋음. 다음은 동일한 예제를 리팩토링한 것:
+
+```vue
+<script setup>
+import { reactive, computed } from 'vue'
+
+const author = reactive({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
+
+// 계산된 ref
+const publishedBooksMessage = computed(() => {
+  return author.books.length > 0 ? 'Yes' : 'No'
+})
+</script>
+
+<template>
+  <p>Has published books:</p>
+  <span>{{ publishedBooksMessage }}</span>
+</template>
+```
+
+여기서는 `publishedBooksMessage`라는 계산된 속성을 선언함. `computed()` 함수는 getter 함수를 인자로 받아야 하며, 반환된 값은 계산된 ref임. 일반 ref와 유사하게 `publishedBooksMessage.value`로 계산된 결과에 접근할 수 있음. 계산된 ref는 템플릿에서도 자동으로 언래핑되므로, 템플릿 표현식에서 `.value` 없이 참조할 수 있음.
+
+계산된 속성은 반응형 종속성을 자동으로 추적함. Vue는 `publishedBooksMessage`의 계산이 `author.books`에 의존한다는 것을 인식하므로, `author.books`가 변경될 때 `publishedBooksMessage`에 의존하는 바인딩을 업데이트함.
+
+## Computed Caching vs. Methods
+우리가 같은 결과를 얻기 위해 메소드를 호출할 수도 있다는 것을 알았을 것임:
+
+```html
+<p>{{ calculateBooksMessage() }}</p>
+```
+
+```javascript
+// 컴포넌트 내
+function calculateBooksMessage() {
+  return author.books.length > 0 ? 'Yes' : 'No'
+}
+```
+
+계산된 속성 대신 메소드를 정의할 수 있음. 결과적으로 두 접근 방식은 동일함. 그러나 차이점은 계산된 속성이 반응형 종속성에 기반하여 캐시된다는 것임. 계산된 속성은 그 반응형 종속성이 변경될 때만 다시 평가됨. 즉, `author.books`가 변경되지 않는 한, `publishedBooksMessage`에 여러 번 접근해도 이전에 계산된 결과를 즉시 반환함.
+
+반면 메소드 호출은 렌더링이 발생할 때마다 항상 함수를 실행함.
+
+캐싱이 왜 필요할까요? 만약 우리가 방대한 배열을 반복하고 많은 계산을 요구하는 비싼 계산된 속성을 가지고 있다면, 그 속성에 의존하는 다른 계산된 속성도 있을 수 있음. 캐싱이 없으면 불필요하게 `list`의 getter를 여러 번 실행하게 됨! 캐싱을 원하지 않는 경우에는 대신 메소드 호출을 사용해야함.
+
+## Writable Computed
+계산된 속성은 기본적으로 getter 전용임. 계산된 속성에 새 값을 할당하려고 하면 런타임 경고를 받게 됨. 드물게 "쓰기 가능한" 계산된 속성이 필요할 경우, getter와 setter를 모두 제공하여 생성할 수 있음:
+
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+
+const firstName = ref('John')
+const lastName = ref('Doe')
+
+const fullName = computed({
+  // getter
+  get() {
+    return firstName.value + ' ' + lastName.value
+  },
+  // setter
+  set(newValue) {
+    // 구조 분해 할당 문법을 사용함.
+    [firstName.value, lastName.value] = newValue.split(' ')
+  }
+})
+</script>
+```
+
+이제 `fullName.value = 'John Doe'`를 실행하면 setter가 호출되고 `firstName`과 `lastName`이 accordingly 업데이트됨.
+
+## Getting the previous value
+**3.4+ 버전에서만 지원**
+필요할 경우, 계산된 속성이 반환하는 이전 값을 getter의 첫 번째 인수를 통해 가져올 수 있음:
+
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+
+const count = ref(2)
+
+// 이 계산된 속성은 count가 3 이하일 때 count 값을 반환함.
+// count가 4 이상일 때는 조건을 충족했던 마지막 값이 반환됨.
+// 그 후 count가 3 이하일 때까지 계속 유지됨.
+const alwaysSmall = computed((previous) => {
+  if (count.value <= 3) {
+    return count.value;
+  }
+
+  return previous;
+})
+</script>
+```
+
+쓰기 가능한 계산된 속성을 사용하는 경우:
+
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+
+const count = ref(2)
+
+const alwaysSmall = computed({
+  get(previous) {
+    if (count.value <= 3) {
+      return count.value;
+    }
+
+    return previous;
+  },
+  set(newValue) {
+    count.value = newValue * 2;
+  }
+})
+</script>
+```
+
+## Best Practices
+- **Getter는 부작용이 없어야 함.**  
+  계산된 getter 함수는 순수 계산만 수행해야 하며 부작용이 없어야 함. 예를 들면, 계산된 getter 내에서 다른 상태를 변경하거나, 비동기 요청을 하거나, DOM을 변경해서는 안 됨. 계산된 속성을 다른 값 기반으로 값을 도출하는 방법을 선언적으로 설명하는 것으로 생각해야함. 그것의 유일한 책임은 해당 값을 계산하고 반환하는 것임.
+
+- **계산된 값을 변경하면 안됨.**  
+  계산된 속성에서 반환된 값은 파생 상태임. 이를 일종의 임시 스냅샷으로 생각해야함. 원본 상태가 변경될 때마다 새로운 스냅샷이 생성됨. 스냅샷을 변경하는 것은 의미가 없으므로, 계산된 반환 값은 읽기 전용으로 취급하고 절대 변경하지 않아야 함. 대신, 새로운 계산을 유도하기 위해 의존하는 원본 상태를 업데이트해야함.
