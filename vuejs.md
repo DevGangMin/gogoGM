@@ -1073,3 +1073,233 @@ const evenNumbers = computed(() => {
 ```
 
 `reverse()`와 `sort()`는 원본 배열을 변형하므로 계산 속성에서 사용할 때 주의해야 함.
+
+# Event Handling
+
+## Event Listening  
+
+`v-on` 디렉티브를 사용할 수 있음. 
+
+일반적으로 `@` 기호로 축약하여 사용하며, DOM Event를 리스닝하고 Event가 트리거될 때 자바스크립트를 실행할 수 있음.
+
+사용법: `v-on:click="handler"` or `@click="handler"`
+
+handler 값은 다음 중 하나일 수 있음:
+
+- **inline handler**: Event가 트리거될 때 실행될 inline 자바스크립트(네이티브 `onclick` 속성과 유사).
+- **Method handler**: 컴포넌트에 정의된 Method를 가리키는 속성 이름 또는 경로.
+
+## inline handler  
+inline handler는 주로 간단한 경우에 사용됨. 예를 들어:
+
+```js
+const count = ref(0)
+```
+
+```html
+<button @click="count++">1 추가</button>
+<p>카운트 값: {{ count }}</p>
+```
+
+## Method handler
+
+더 복잡한 로직의 경우, inline handler는 적합하지 않을 수 있음.
+
+그래서 `v-on`은 호출하고 싶은 컴포넌트 Method의 이름이나 경로도 허용함.
+
+예를 들어:
+
+```js
+const name = ref('Vue.js')
+
+function greet(event) {
+  alert(`안녕하세요, ${name.value}!`)
+  // `event`는 네이티브 DOM Event임.
+  if (event) {
+    alert(event.target.tagName)
+  }
+}
+```
+
+```html
+<!-- `greet`는 위에서 정의된 Method의 이름임. -->
+<button @click="greet">인사하기</button>
+```
+
+Method handler는 자동으로 트리거된 네이티브 DOM Event 객체를 받음.
+
+위 예시에서, Event를 디스패치한 요소를 `event.target`을 통해 접근할 수 있음.
+
+### Method와 inline handler 감지
+
+템플릿 컴파일러는 `v-on` 값 문자열이 유효한 자바스크립트 식별자인지 또는 속성 접근 경로인지 확인하여 Method handler를 감지함.
+
+예를 들어, `foo`, `foo.bar`, `foo['bar']`는 Method handler로 처리되고, `foo()`와 `count++`는 inline handler로 처리됨.
+
+### inline handler에서 Method 호출  
+
+Method 이름에 직접 바인딩하는 대신, inline handler에서 Method를 호출할 수도 있음.
+
+이렇게 하면 네이티브 Event 대신 Method에 커스텀 인자를 전달할 수 있음.
+
+```js
+function say(message) {
+  alert(message)
+}
+```
+
+```html
+<button @click="say('안녕하세요')">인사</button>
+<button @click="say('안녕히 가세요')">작별 인사</button>
+```
+
+### inline handler에서 Event 인수 접근  
+때로는 inline handler에서 원래의 DOM Event에 접근할 필요도 있음.
+
+Method에 특수 변수 `$event`를 사용하여 전달할 수 있으며, inline 화살표 함수를 사용할 수도 있음.
+
+```html
+<!-- 특수 변수 $event 사용 -->
+<button @click="warn('아직 제출할 수 없음.', $event)">
+  제출
+</button>
+
+<!-- inline 화살표 함수 사용 -->
+<button @click="(event) => warn('아직 제출할 수 없음.', event)">
+  제출
+</button>
+```
+
+```js
+function warn(message, event) {
+  // 네이티브 Event에 접근할 수 있음.
+  if (event) {
+    event.preventDefault()
+  }
+  alert(message)
+}
+```
+
+### Event 수정자  
+
+Event handler에서 `event.preventDefault()` 또는 `event.stopPropagation()`을 호출해야 하는 경우가 매우 흔함.
+
+하지만 이런 작업을 Method 내에서 처리할 수 있다면, Method는 DOM Event의 세부사항 대신 데이터 로직에만 집중할 수 있음.
+
+이를 해결하기 위해 Vue는 `v-on`을 위한 Event 수정자를 제공함.
+
+수정자는 점(`.`)으로 표시되는 디렉티브 접미사임.
+
+- `.stop`
+- `.prevent`
+- `.self`
+- `.capture`
+- `.once`
+- `.passive`
+
+```html
+<!-- 클릭 Event의 전파가 중단됨 -->
+<a @click.stop="doThis"></a>
+
+<!-- 제출 Event가 페이지를 더 이상 새로고침하지 않음 -->
+<form @submit.prevent="onSubmit"></form>
+
+<!-- 수정자를 체이닝할 수 있음 -->
+<a @click.stop.prevent="doThat"></a>
+
+<!-- 수정자만 사용 -->
+<form @submit.prevent></form>
+
+<!-- Event의 대상이 해당 요소일 때만 handler 트리거 -->
+<div @click.self="doThat">...</div>
+```
+
+### 참고 
+
+수정자를 사용할 때 순서는 중요함.
+
+코드가 동일한 순서로 생성되기 때문에, `@click.prevent.self`는 기본 클릭 동작을 요소 및 자식에게 모두 방지하지만, `@click.self.prevent`는 요소 자체에서만 클릭의 기본 동작을 방지함.
+
+`.capture`, `.once`, `.passive` 수정자는 네이티브 `addEventListener` Method의 옵션을 반영함:
+
+```html
+<!-- 캡처 모드로 Event 리스너 추가 -->
+<div @click.capture="doThis">...</div>
+
+<!-- 클릭 Event는 최대 한 번만 트리거 -->
+<a @click.once="doThis"></a>
+
+<!-- 스크롤 Event의 기본 동작(스크롤)이 바로 실행 -->
+<div @scroll.passive="onScroll">...</div>
+```
+
+`.passive` 수정자는 주로 모바일 장치에서 터치 Event 리스너 성능을 개선하기 위해 사용됨.
+
+## 키 수정자  
+
+키보드 Event를 리스닝할 때는 특정 키를 확인해야 할 때가 많음.
+
+Vue는 `v-on` 또는 `@`에서 키 Event를 리스닝할 때 키 수정자를 추가할 수 있음:
+
+```html
+<!-- `Enter` 키를 누를 때만 `submit` 호출 -->
+<input @keyup.enter="submit" />
+```
+
+```html
+<input @keyup.page-down="onPageDown" />
+```
+
+## 키 별칭  
+
+Vue는 가장 일반적으로 사용되는 키에 대한 별칭을 제공함:
+
+- `.enter`
+- `.tab`
+- `.delete` (Delete 및 Backspace 키 모두 캡처)
+- `.esc`
+- `.space`
+- `.up`
+- `.down`
+- `.left`
+- `.right`
+
+## 시스템 수정 키  
+
+다음 수정자를 사용하여 마우스 또는 키보드 Event 리스너가 해당 수정 키가 눌렸을 때만 트리거되도록 할 수 있음:
+
+- `.ctrl`
+- `.alt`
+- `.shift`
+- `.meta`
+
+```html
+<!-- Alt + Enter -->
+<input @keyup.alt.enter="clear" />
+
+<!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+```
+
+## .exact 수정자  
+
+`.exact` 수정자는 Event를 트리거하기 위한 시스템 수정 키 조합을 정확히 제어할 수 있게 해줌.
+
+```html
+<!-- Alt 또는 Shift가 함께 눌려도 트리거 -->
+<button @click.ctrl="onClick">A</button>
+
+<!-- Ctrl만 눌렸을 때만 트리거 -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+
+<!-- 시스템 수정 키가 없을 때만 트리거 -->
+<button @click.exact="onClick">A</button>
+```
+
+## 마우스 버튼 수정자  
+
+- `.left`
+- `.right`
+- `.middle`
+
+이 수정자는 특정 마우스 버튼으로 트리거된 Event에만 handler를 제한함.
