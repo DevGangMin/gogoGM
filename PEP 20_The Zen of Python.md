@@ -1,5 +1,5 @@
 # PEP 20 (The Zen of Python)
- Beautiful is better than ugly.
+## Beautiful is better than ugly.
  아름다움은 추함보다 낫다.
  코드나 프로그램은 아름답고 깔끔해야 하며, 추하고 복잡한 형태보다 매력적인 형태가 선호된다.
  
