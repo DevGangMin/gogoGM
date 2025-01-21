@@ -1,6 +1,6 @@
 # Event handler(이벤트 핸들러)
 
-vue에서는 v-on의 축약형인 @을 주로 사용하여 DOM 이벤트를 수신하고 이벤트가 트리거될 때 JavaScript를 실행함.
+vue에서는 `v-on`의 축약형인 `@`을 주로 사용하여 DOM 이벤트를 수신하고 이벤트가 트리거될 때 JavaScript를 실행함.
 
 ## Inline handlers 와 Method handlers
 <p>
@@ -20,7 +20,7 @@ const count = ref(0)
 ```
 
 ### Method handlers
-Method handler는 v-on 호출하려는 컴포넌트 메서드의 이름이나 경로도 허용할 수 있음.
+Method handler는 `v-on` 호출하려는 컴포넌트 메서드의 이름이나 경로도 허용할 수 있음.
 ```html
 <button @click="greet">Greet</button>
 ```
