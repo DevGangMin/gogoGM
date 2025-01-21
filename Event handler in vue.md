@@ -35,3 +35,6 @@ function greet(event) {
 }
 ```
 
+Method handler는 자동으로 해당 이벤트를 트리거하는 네이티브 DOM 이벤트 객체를 받음.
+위의 예제에서는 ```event.target```을 통해 이벤트를 발송하는 요소에 접근할 수 있음.
+
