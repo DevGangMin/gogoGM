@@ -8,19 +8,20 @@ Inline handlers = 이벤트가 트리거될 때 실행되는 인라인 JavaScrip
 Method handlers = 컴포넌트에 정의된 메서드를 가리키는 속성 이름 또는 경로
 </p>
 Inline handlers는 다음과 같은 간단한 경우에 사용됨.
-'''html
+
+```html
 <button @click="count++">Add 1</button>
 <p>Count is: {{ count }}</p>
-'''
-'''js
+```
+```js
 const count = ref(0)
-'''
+```
 
 Method handler는 v-on 호출하려는 컴포넌트 메서드의 이름이나 경로도 허용할 수 있음.
-'''html
+```html
 <button @click="greet">Greet</button>
-'''
-'''js
+```
+```js
 const name = ref('Vue.js')
 
 function greet(event) {
@@ -30,5 +31,5 @@ function greet(event) {
     alert(event.target.tagName)
   }
 }
-'''
+```
 
