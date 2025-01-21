@@ -3,10 +3,9 @@
 vue에서는 `v-on`의 축약형인 `@`을 주로 사용하여 DOM 이벤트를 수신하고 이벤트가 트리거될 때 JavaScript를 실행함.
 
 ## Inline handlers 와 Method handlers
-<p>
-Inline handlers = 이벤트가 트리거될 때 실행되는 인라인 JavaScript (네이티브 `onclick`속성과 유사).<br>
+
+Inline handlers = 이벤트가 트리거될 때 실행되는 인라인 JavaScript (네이티브 `onclick` 속성과 유사).<br>
 Method handlers = 컴포넌트에 정의된 메서드를 가리키는 속성 이름 또는 경로
-</p>
 
 ### Inline handlers
 Inline handlers는 다음과 같은 간단한 경우에 사용됨.
