@@ -17,7 +17,7 @@ export default
   id : 2,
   title: "Geumsan Apartment Flat",
   image: "https://codingapple1.github.io/vue/room2.jpg",
-  content: "금산오거리 역세권 아파트입니다. 애완동물 불가능 ?",
+  content: "금산오거리 역세권 아파트입니다. 애완동물 불가능하지만 몰래 키워보세요. 저도 몰래 찾아서 돈 뜯어가겠습니다.",
   price: 780000
   },
   {
@@ -38,6 +38,6 @@ export default
   id : 5,
   title: "Banziha One Room",
   image: "https://codingapple1.github.io/vue/room5.jpg",
-  content: "반지하 원룸입니다. 비올 때 물가끔 새는거 빼면 좋아요",
+  content: "반지하 원룸입니다. 비올 때 창문 안닫으면 물이 좀 차는거 빼곤 좋아요",
   price: 370000
 }];
